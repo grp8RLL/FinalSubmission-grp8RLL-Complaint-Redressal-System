@@ -1,0 +1,260 @@
+SQL Schema:
+
+Data base Name:CRSSystem
+
+Table:hibernate_sequence
+    
+    create table `hibernate_sequence` (
+       `next_val` bigint
+    ) engine=InnoDB
+Hibernate: 
+    
+    insert into `hibernate_sequence` values ( 1 )
+
+   
+Table:tbl_complaints
+ 
+    create table `tbl_complaints` (
+       `ticketId` integer not null,
+        `complaint` varchar(255),
+        `customerEmail` varchar(255),
+        `pincode` varchar(255),
+        `status` varchar(255),
+        primary key (`ticketId`)
+    ) engine=InnoDB
+
+
+Table:tbl_customer
+    
+    create table `tbl_customer` (
+       `customerEmail` varchar(255) not null,
+        `customerAddress` varchar(255),
+        `customerMobile` varchar(255),
+        `customerName` varchar(255),
+        `customerPassword` varchar(255),
+        `customerPincode` varchar(255),
+        primary key (`customerEmail`)
+    ) engine=InnoDB
+
+Table:tbl_engineer
+
+    
+    create table `tbl_engineer` (
+       `engineerEmail` varchar(255) not null,
+        `engineerName` varchar(255),
+        `engineerPassword` varchar(255),
+        primary key (`engineerEmail`)
+    ) engine=InnoDB
+  
+
+Table:tbl_ebgineerDuty 
+    
+    create table `tbl_engineerDuty` (
+       `engineerDutyId` integer not null,
+        `customerEmail` varchar(255),
+        `engineerEmail` varchar(255),
+        `ticketId` integer not null,
+        primary key (`engineerDutyId`)
+    ) engine=InnoDB
+
+Table:tbl_feedbacks
+    
+    create table `tbl_feedbacks` (
+       `feedbackId` integer not null,
+        `customerEmail` varchar(255),
+        `feedback` varchar(255),
+        `ticketId` integer not null,
+        primary key (`feedbackId`)
+    ) engine=InnoDB
+
+
+Table:tbl_manager
+    
+    create table `tbl_manager` (
+       `managerEmail` varchar(255) not null,
+        `managerName` varchar(255),
+        `managerPassword` varchar(255),
+        `managerPincode` varchar(255),
+        primary key (`managerEmail`)
+
+
+Customer register Insert values:
+
+select
+        customers0_.`customerEmail` as customer1_1_0_,
+        customers0_.`customerAddress` as customer2_1_0_,
+        customers0_.`customerMobile` as customer3_1_0_,
+        customers0_.`customerName` as customer4_1_0_,
+        customers0_.`customerPassword` as customer5_1_0_,
+        customers0_.`customerPincode` as customer6_1_0_ 
+    from
+        `tbl_customer` customers0_ 
+    where
+        customers0_.`customerEmail`=?
+ 
+    insert 
+    into
+        `
+        tbl_customer` (
+            `customerAddress`, `customerMobile`, `customerName`, `customerPassword`, `customerPincode`, `customerEmail`
+        ) 
+    values
+        (?, ?, ?, ?, ?, ?)
+
+
+
+Customer Complaint:
+
+ insert 
+    into
+        `
+        tbl_complaints` (
+            `complaint`, `customerEmail`, `pincode`, `status`, `ticketId`
+        ) 
+    values
+        (?, ?, ?, ?, ?)
+
+
+View Complaint By Customer:
+
+ select
+        complaints0_.`ticketId` as ticketid1_0_,
+        complaints0_.`complaint` as complain2_0_,
+        complaints0_.`customerEmail` as customer3_0_,
+        complaints0_.`pincode` as pincode4_0_,
+        complaints0_.`status` as status5_0_ 
+    from
+        `tbl_complaints` complaints0_ 
+    where
+        complaints0_.`customerEmail`=?
+
+
+Manager Register Insert values:
+
+select
+        managers0_.`managerEmail` as managere1_5_0_,
+        managers0_.`managerName` as managern2_5_0_,
+        managers0_.`managerPassword` as managerp3_5_0_,
+        managers0_.`managerPincode` as managerp4_5_0_ 
+    from
+        `tbl_manager` managers0_ 
+    where
+        managers0_.`managerEmail`=?
+Hibernate: 
+    insert 
+    into
+        `
+        tbl_manager` (
+            `managerName`, `managerPassword`, `managerPincode`, `managerEmail`
+        ) 
+    values
+        (?, ?, ?, ?)
+
+
+Manager view Complaints by Pincode:
+
+  select
+        complaints0_.`ticketId` as ticketid1_0_,
+        complaints0_.`complaint` as complain2_0_,
+        complaints0_.`customerEmail` as customer3_0_,
+        complaints0_.`pincode` as pincode4_0_,
+        complaints0_.`status` as status5_0_ 
+    from
+        `tbl_complaints` complaints0_ 
+    where
+        complaints0_.`pincode`=?
+
+
+Assign Engineer By Manager:
+
+
+update
+        `hibernate_sequence` 
+    set
+        `next_val`= ? 
+    where
+        `next_val`=?
+Hibernate: 
+    insert 
+    into
+        `
+        tbl_engineerDuty` (
+            `customerEmail`, `engineerEmail`, `ticketId`, `engineerDutyId`
+        ) 
+    values
+        (?, ?, ?, ?)
+
+
+
+Engineer Register Insert Values:
+
+select
+        engineers0_.`engineerEmail` as engineer1_2_0_,
+        engineers0_.`engineerName` as engineer2_2_0_,
+        engineers0_.`engineerPassword` as engineer3_2_0_ 
+    from
+        `tbl_engineer` engineers0_ 
+    where
+        engineers0_.`engineerEmail`=?
+Hibernate: 
+    insert 
+    into
+        `
+        tbl_engineer` (
+            `engineerName`, `engineerPassword`, `engineerEmail`
+        ) 
+    values
+        (?, ?, ?)
+
+
+Engineer Solved the Complaint:
+
+ select
+        complaints0_.`ticketId` as ticketid1_0_0_,
+        complaints0_.`complaint` as complain2_0_0_,
+        complaints0_.`customerEmail` as customer3_0_0_,
+        complaints0_.`pincode` as pincode4_0_0_,
+        complaints0_.`status` as status5_0_0_ 
+    from
+        `tbl_complaints` complaints0_ 
+    where
+        complaints0_.`ticketId`=?
+Hibernate: 
+    update
+        `tbl_complaints` 
+    set
+        `complaint`=?,
+        `customerEmail`=?,
+        `pincode`=?,
+        `status`=? 
+    where
+        `ticketId`=?
+
+
+Delete Manager:
+
+ delete 
+    from
+        `tbl_manager` 
+    where
+        `managerEmail`=?
+
+Deleted Engineer:
+
+ delete 
+    from
+        `tbl_engineer` 
+    where
+        `engineerEmail`=?
+
+
+Delete Customer:
+
+
+ delete 
+    from
+        `tbl_customer` 
+    where
+        `customerEmail`=?
+
+
